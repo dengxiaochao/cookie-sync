@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title>同步会话Cookie</title>
+    <style>
+        body { font-family: system-ui, sans-serif; max-width: 500px; margin: 80px auto; text-align: center; }
+        .btn { padding: 12px 24px; font-size: 16px; background: #00a1d6; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+        .btn:hover { background: #0088b8; }
+        #result { margin-top: 20px; padding: 12px; border-radius: 4px; display: none; }
+        .success { background: #e8f5e9; color: #2e7d32; }
+        .error { background: #fbe9e7; color: #c62828; }
+    </style>
+</head>
+<body>
+    <h2>同步 _AJSESSIONID 到本地</h2>
+    <p style="color:#666;">点击按钮将当前会话 cookie 同步到 ~/.bilicookie</p>
+    <button class="btn" onclick="syncCookie()">同步 Cookie</button>
+    <div id="result"></div>
+    <script>
+        function syncCookie() {
+            const el = document.getElementById('result');
+            el.style.display = 'none';
+
+            fetch('http://localhost:7070/sync-cookie', {
+                method: 'GET',
+                credentials: 'include'
+            })
+            .then(r => r.json())
+            .then(data => {
+                el.style.display = 'block';
+                if (data.code === 0) {
+                    el.className = 'success';
+                    el.textContent = '✓ ' + data.message;
+                } else {
+                    el.className = 'error';
+                    el.textContent = '✗ ' + data.message;
+                }
+            })
+            .catch(err => {
+                el.style.display = 'block';
+                el.className = 'error';
+                el.textContent = '✗ 请求失败: ' + err.message;
+            });
+        }
+    </script>
+</body>
+</html>
