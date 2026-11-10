@@ -1,0 +1,15 @@
+/cookie-sync
+/cookie-sync.log
+/certs/
+/deploy/
+/.agents/
+/.codex/
+/.aws/
+/config/
+/configs/
+*.key
+*.pem
+/.bilicookie
+/.bilicookie-*
+.env
+.env.*
